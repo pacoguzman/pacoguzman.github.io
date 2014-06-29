@@ -1,0 +1,36 @@
+---
+layout: post
+title: Git Stash
+date:   2009-04-02 15:34:41
+categories:
+---
+
+Actualmente estoy repasando un nuevo libro sobre Git, el Git Community Book. De momento lo que he leído me parece bien planteado y ayuda mucho a introducirnos en el uso de git.
+
+Yo llevo un tiempo utilizando Git, pero nunca había leído nada sobre git-stash y me parece que este comando tiene una gran utilidad. El workflow en el que he visto que es de gran utilidad este comando sería el siguiente:
+
+Creamos una nueva rama para añadir nueva funcionalidad:
+
+```bash
+git checkout -b new_feature
+```
+
+Trabajamos en esta rama, añadiendo la nueva funcionalidad y en un momento dado nos damos cuenta de algo que debemos arreglar en la rama estable. Pero aún no queremos hacer un commit en la rama ni perder los cambios que llevamos hechos para la nueva funcionalidad. Aquí entra git-stash
+
+```bash
+git stash "trabajando en new_feature"
+```
+
+Esto almacenará los cambios realizados para la nueva funcionalidad y nos permitirá entrar en la rama estable, realizar los cambios que detectamos y aplicarlos. Para regresar al estado anterior de la rama anterior simplemente hacemos lo siguiente:
+
+```bash
+git stash apply
+```
+
+Y podemos seguir trabajando para completar nuestra nueva funcionalidad.
+
+Algunos enlaces sobre git-stash:
+
+- [http://kurt.karmalab.org/articles/2008/02/18/the-power-of-git-git-stash](http://kurt.karmalab.org/articles/2008/02/18/the-power-of-git-git-stash)
+- [http://freyes.blogspot.com/2008/12/git-stash.html](http://freyes.blogspot.com/2008/12/git-stash.html)
+- [http://ariejan.net/2008/04/23/git-using-the-stash/](http://ariejan.net/2008/04/23/git-using-the-stash/)

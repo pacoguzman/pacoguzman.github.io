@@ -1,0 +1,63 @@
+---
+layout: post
+title: CSV y ruby 1.9 y el 'encoding' (yo lo escribo 'enconding')
+date:   2010-12-04 15:59:22
+categories:
+---
+
+En algunos de los proyectos rails en los que he trabajado hemos tenido la necesidad de exportar datos en formato [CSV](http://en.wikipedia.org/wiki/Comma-separated_values) y siempre la primera opción era utilizar [FasterCSV](http://fastercsv.rubyforge.org/), pero en mi actual proyecto en rails estamos desarrollando en ruby 1.9.2 y me he encontrado con algunas sorpresas para incorpar la exportación en formato CSV en la aplicación.
+
+En primer lugar después de incluir fastercsv en mi [Gemfile](http://gembundler.com/) y tratar de arrancar la aplicación me encuentro con el siguiente mensaje:
+
+> Please switch to Ruby 1.9's standard CSV library.  It's FasterCSV plus support for Ruby 1.9's m17n encoding engine.
+
+Bueno parece que no necesito ningúna libreria extra solo utilizar la librería standard de [CSV de Ruby 1.9](http://ruby-doc.org/ruby-1.9/classes/CSV.html). Pues nada me creo un initializer dependencies.rb e incluyo un require 'csv'. Ahora manos a la obra con el CSV en ruby 1.9, empezamos probando cosas, en un irb:
+
+```ruby
+CSV.generate{ |csv| csv << ["nombre", "apellidos"] } #=> "nombre,apellidos\n"
+```
+
+Bien pinta bien, ahora unos carácteres especiales (unas tildes por ejemplo)
+
+```ruby
+CSV.generate{ |csv| csv << ["dirección", "población"] } #=> "direcci\xC3\xB3n,poblaci\xC3\xB3n\n"
+```
+
+Vale ya aparecen los primeros problemas con la codificación. Yo siempre he trabajo en "UTF-8" tanto a nivel de aplicación como en base de datos, así que supongo que deberé especificar la codificación en algún sitio. Esto en ruby 1.9 es fácil, e igual de fácil pasarselo a la libreria de CSV.
+
+```ruby
+CSV.generate(:encoding => "".encoding){ |csv| csv << ["dirección", "población"] } #=> "dirección,población\n"
+```
+
+La cosa mejora y me creo un fichero dentro del directorio lib de mi aplicación rails 3
+
+```ruby
+ class CsvBlog
+   def self.to_csv
+     CSV.generate(:encoding => "".encoding) { |csv|
+       csv << ["dirección", "población"]
+     }
+   end
+ end
+```
+
+Ahora en lugar de arrancar el irb arranco la consola de rails:
+
+```ruby
+CsvBlog.to_csv
+/lib/csv_blog.rb:5: invalid multibyte char (US-ASCII)
+/lib/csv_blog.rb:5: syntax error, unexpected $end, expecting ']'
+csv << ["dirección", "población"]
+```
+
+Bueno parece que rails 3 no establece la codificación para los ficheros dentro del directorio lib de la aplicación, así que toca especificar la codificación en este nuevo fichero y ya no tenemos mayor problema. Pero queda feo tener que especificar la codificación al generar el csv, pero miremos lo que ocurre:
+
+```ruby
+CSV.generate{ |csv| puts "".encoding; csv << ["dirección"] } # UTF-8 => "direcci\xC3\xB3n\n"
+CSV.generate{ |csv| puts csv.encoding; csv << ["dirección"] } # US-ASCII => "direcci\xC3\xB3n\n"
+CSV.generate(""){ |csv| puts csv.encoding; csv << ["dirección"] } # UTF-8 => "dirección\n"
+```
+
+<La codificación de nuestros datos es UTF-8 pero si no se especifica a la librería mediante la opción :encoding o mediate un string (extrae la codificación de el), el objeto csv nos hace un estropicio.
+
+Hasta aquí todo en la próxima entrega comentaré como integrar esto con los Responders o Renderers incluidos en rails 3, el tema nos va a quedar muy sencillo.
