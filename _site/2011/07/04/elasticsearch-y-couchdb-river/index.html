@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width initial-scale=1" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+      <title>ElasticSearch y Couchdb river</title>
+      <meta name="description" content="Personal blog about Ruby and Rails development and live experiences">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="canonical" href="https://pacoguzman.github.io/2011/07/04/elasticsearch-y-couchdb-river/">
+      <link rel="stylesheet" href="/assets/application.css?cb=38dd5d53ee15645b619f25a3939dc4af">
+
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-58160626-1', 'auto');
+          ga('send', 'pageview');
+
+      </script>
+  </head>
+
+  <body>
+    <header class="navigation">
+  <div class="menu-wrapper">
+    <a href="javascript:void(0)" class="logo">
+      <img src="https://raw.github.com/Magnus-G/Random/master/placeholder_logo_1.png" alt="">
+    </a>
+    <p class="navigation-menu-button" id="js-mobile-menu">MENU</p>
+    <div class="nav">
+      <ul id="navigation-menu">
+        
+          
+            <li class="nav-link"><a href="/">Riding to NoWhere</a></li>
+          
+        
+          
+            <li class="nav-link"><a href="/posts">Posts</a></li>
+          
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  $(function() {
+    var menu = $('#navigation-menu');
+    var menuToggle = $('#js-mobile-menu');
+    var signUp = $('.sign-up');
+
+    $(menuToggle).on('click', function(e) {
+      e.preventDefault();
+      menu.slideToggle(function(){
+        if(menu.is(':hidden')) {
+          menu.removeAttr('style');
+        }
+      });
+    });
+
+    // underline under the active nav item
+    $(".nav .nav-link").click(function() {
+      $(".nav .nav-link").each(function() {
+        $(this).removeClass("active-nav-item");
+      });
+      $(this).addClass("active-nav-item");
+      $(".nav .more").removeClass("active-nav-item");
+    });
+  });
+</script>
+
+    <div class="page-content">
+        <div class="wrap">
+            <div class="post">
+
+  <header class="post-header">
+    <h1>ElasticSearch y Couchdb river</h1>
+    <p class="meta">Jul 4, 2011</p>
+  </header>
+
+  <article class="post-content">
+  <p>En este post vamos a ver como incorporar un motor de búsqueda en una aplicación (Rails) para indexar documentos almacenados en Couchdb.</p>
+
+<p><a href="http://www.elasticsearch.org/">ElasticSearch</a> es un motor de búsqueda construido sobre <a href="http://lucene.apache.org/">Lucene</a>, es Open Source (Apache 2), es distruido y presenta un interfaz Restful. ElasticSearch cuenta con una funcionalidad denominada <a href="http://www.elasticsearch.org/guide/reference/river/">River</a>. River es un sistema de plugins que una vez instalado en ElasticSearch permite extraer datos (o enviarle datos) que será indexados e incoporados al cluster de ElasticSearch, para su posterior consulta. ElasticSearch cuenta con 4 diferentes rivers listos para ser instalados: <a href="http://www.elasticsearch.org/guide/reference/river/couchdb.html">Couchdb</a>, <a href="http://www.elasticsearch.org/guide/reference/river/rabbitmq.html">RabbitMQ</a>, <a href="http://www.elasticsearch.org/guide/reference/river/twitter.html">Twitter</a> y <a href="http://www.elasticsearch.org/guide/reference/river/wikipedia.html">Wikipedia</a>. Aquí nos centraremos en el uso del river para Couchdb.</p>
+
+<p>El river para Couchdb se basa en una funcionalidad de Couchdb denominada <a href="http://guide.couchdb.org/draft/notifications.html#continuous">Continuous Changes API</a>. Una vez te conectas a este API y manteniendo la conexión abierta Couchdb te enviará las modificaciones y seguirá manteniendo la conexión abierta para enviarte las siguientes modificaciones hasta que decidas cerrar la conexión. Siempre tendremos una conexión abierta (por river definido) pero Couchdb es capaz de manejar un gran número de conexiones sin problemas.</p>
+
+<p>Como instalamos ElasticSearch y el river de Couchdb:</p>
+
+<script src="https://gist.github.com/pacoguzman/1062993.js?file=INSTALL_AND_SETUP"> </script>
+
+<p>El propio river de Couchdb con la configuración que le hemos dado se enganchará a la siguiente url, para ir recibiendo las modificaciones que hagamos en la base de datos de couchdb e ir indexando documentos.</p>
+
+<blockquote>
+  <p>http://localhost:5984/couchdb_myapp_development/_changes?feed=continuous&amp;include_docs=true&amp;heartbeat=10000</p>
+</blockquote>
+
+<p>Sin embargo con esta configuración incluimos en el mismo índice todos los documentos de Couchdb, si queremos establecer un indice para dos tipos de documentos como por ejemplo Product y Person, debemos establecer un filtro a la hora de crear el river. Este filtro debe hacer referencia al nombre de un filtro especificado a la hora de definir un <a href="http://guide.couchdb.org/draft/notifications.html#filters">design document</a>.</p>
+
+<script src="https://gist.github.com/pacoguzman/1062993.js?file=DESIGN_DOCS"> </script>
+
+<script src="https://gist.github.com/pacoguzman/1062993.js?file=FILTERING"> </script>
+
+<p>Debemos tener en cuenta que nuestros documentos de couchdb tienen especificado un atributo ‘type’ que permite realizar el filtrado.</p>
+
+<p>Por último crearemos un documento de tipo ‘Product’ y realizaremos una búsqueda</p>
+
+<script src="https://gist.github.com/pacoguzman/1062993.js?file=EXAMPLE"> </script>
+
+
+  </article>
+
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/application.js?cb=23dc9061ba93ec68527e675c87e0c367"></script>
+  </body>
+
+</html>

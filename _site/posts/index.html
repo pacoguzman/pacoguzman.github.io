@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width initial-scale=1" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+      <title>Riding to NoWhere</title>
+      <meta name="description" content="Personal blog about Ruby and Rails development and live experiences">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="canonical" href="https://pacoguzman.github.io/posts/">
+      <link rel="stylesheet" href="/assets/application.css?cb=38dd5d53ee15645b619f25a3939dc4af">
+
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-58160626-1', 'auto');
+          ga('send', 'pageview');
+
+      </script>
+  </head>
+
+  <body>
+    <header class="navigation">
+  <div class="menu-wrapper">
+    <a href="javascript:void(0)" class="logo">
+      <img src="https://raw.github.com/Magnus-G/Random/master/placeholder_logo_1.png" alt="">
+    </a>
+    <p class="navigation-menu-button" id="js-mobile-menu">MENU</p>
+    <div class="nav">
+      <ul id="navigation-menu">
+        
+          
+            <li class="nav-link"><a href="/">Riding to NoWhere</a></li>
+          
+        
+          
+            <li class="nav-link"><a href="/posts">Posts</a></li>
+          
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  $(function() {
+    var menu = $('#navigation-menu');
+    var menuToggle = $('#js-mobile-menu');
+    var signUp = $('.sign-up');
+
+    $(menuToggle).on('click', function(e) {
+      e.preventDefault();
+      menu.slideToggle(function(){
+        if(menu.is(':hidden')) {
+          menu.removeAttr('style');
+        }
+      });
+    });
+
+    // underline under the active nav item
+    $(".nav .nav-link").click(function() {
+      $(".nav .nav-link").each(function() {
+        $(this).removeClass("active-nav-item");
+      });
+      $(this).addClass("active-nav-item");
+      $(".nav .more").removeClass("active-nav-item");
+    });
+  });
+</script>
+
+    <div class="page-content">
+        <div class="wrap">
+            <h1 class="page-heading">Posts</h1>
+
+<ul class="post-list">
+  
+  <li class="post">
+    <span class="time">2015-01-02&raquo;</span>
+    <a href="/2015/01/02/speed-up-test-suite/">Speed Up our test suite</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2011-07-04&raquo;</span>
+    <a href="/2011/07/04/elasticsearch-y-couchdb-river/">ElasticSearch y Couchdb river</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2011-04-08&raquo;</span>
+    <a href="/2011/04/08/bit.ly-y-prototype-acortando-urls/">bit.ly y prototype acortando urls</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2010-12-08&raquo;</span>
+    <a href="/2010/12/08/sencillo-renderer-de-csv-en-rails-3/">Sencillo renderer de CSV en Rails 3</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2010-12-04&raquo;</span>
+    <a href="/2010/12/04/csv-y-ruby-1.9-y-el-'encoding'-(yo-lo-escribo-'enconding')/">CSV y ruby 1.9 y el 'encoding' (yo lo escribo 'enconding')</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2010-05-20&raquo;</span>
+    <a href="/2010/05/20/mis-%C3%BAltimos-meses-con-ror/">Mis últimos meses con RoR</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2010-01-22&raquo;</span>
+    <a href="/2010/01/22/human_name-and-error_message_for-controversy/">human_name and error_message_for controversy</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-12-12&raquo;</span>
+    <a href="/2009/12/12/precarga-de-asociaciones-usandolo-a-mi-antojo/">Precarga de Asociaciones - Usandolo a mi antojo</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-11-02&raquo;</span>
+    <a href="/2009/11/02/una-de-asociaciones-has_many-through-en-ultrasphinx/">Una de asociaciones has_many :through en ultrasphinx</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-10-02&raquo;</span>
+    <a href="/2009/10/02/jquery-in-action-terminado-%C2%BFahora-qu%C3%A9%3F/">jQuery in Action terminado, ¿Ahora qué?</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-08-17&raquo;</span>
+    <a href="/jekyll/update/2009/08/17/c%C3%ADrculos-con-n%C3%BAmero-de-orden-en-la-web/">Círculos con número de orden en la web</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-04-02&raquo;</span>
+    <a href="/2009/04/02/git-stash/">Git Stash</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-03-22&raquo;</span>
+    <a href="/2009/03/22/notificaciones-ubuntu-con-mumbles-autotest/">Notificaciones en Ubuntu con Mumbles: Autotest</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-03-18&raquo;</span>
+    <a href="/2009/03/18/dell-studio-15/">Mi Portátil Dell Studio 15" con remolinos rubiriscentes, eing</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-03-06&raquo;</span>
+    <a href="/2009/03/06/mtbroutly-red-social-bikers-con-tog/">MTBROUTly - Red Social de Bikers con Tog</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-03-01&raquo;</span>
+    <a href="/2009/03/01/gmail-con-nuevo-upload-ficheros/">GMail con nuevo upload de ficheros</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-02-18&raquo;</span>
+    <a href="/2009/02/18/qr-code-generator/">QR Code Generator</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-02-18&raquo;</span>
+    <a href="/2009/02/18/factory_girl-1-2/">FactoryGirl 1.2</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-02-12&raquo;</span>
+    <a href="/2009/02/12/rails-templates/">Rails templates</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-01-30&raquo;</span>
+    <a href="/2009/01/30/libro-gratuito-ubuntu/">Libro gratuito Ubunut</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-01-28&raquo;</span>
+    <a href="/2009/01/28/reescribiendo-historia-with-git-of-course/">Reescribiendo la historia con Git of course</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-01-19&raquo;</span>
+    <a href="/2009/01/19/syntactic-sugar-in-git/">Syntactic Sugar in Git</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-01-15&raquo;</span>
+    <a href="/2009/01/15/optimistic-locking/">Optinistic Locking</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2009-01-15&raquo;</span>
+    <a href="/2009/01/15/aprendiendo-ruby/">Aprendiendo Ruby</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-12-19&raquo;</span>
+    <a href="/2008/12/19/utilizando-searchlogic/">Utilizando Searchlogic</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-12-16&raquo;</span>
+    <a href="/2008/12/16/busqueda-codigo-git-github-com-codesearch/">Búsqueda de código en Git - github.com/codesearch</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-12-01&raquo;</span>
+    <a href="/2008/12/01/tarde-monologos-monologos-te-dije/">Tarde Monólogos - Los monólogos que te dije</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-11-14&raquo;</span>
+    <a href="/2008/11/14/arriba-y-abajo/">Arriba y Abajo</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-10-26&raquo;</span>
+    <a href="/2008/10/26/noche-monologos/">Noche Monólogos</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-10-07&raquo;</span>
+    <a href="/2008/10/07/unas-cuentas-sencillas/">Unas cuentas sencillas</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-10-03&raquo;</span>
+    <a href="/2008/10/03/inicios-github/">Inicios en GitHub</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-09-23&raquo;</span>
+    <a href="/2008/09/23/envio-notas-provisionales/">Envio de notas provisionales</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-09-12&raquo;</span>
+    <a href="/2008/09/12/citas-paginas-web-bibtex-y-castellano/">Citas páginas web en Bibtex y en castellano</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-08-26&raquo;</span>
+    <a href="/2008/08/26/proyectando-de-nuevo/">Proyectando de nuevo</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-08-25&raquo;</span>
+    <a href="/2008/08/25/flickr-solo-permite-acceso-200-fotos/">Flicks solo permite acceso a 200 fotos</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-08-08&raquo;</span>
+    <a href="/2008/08/08/punta-umbria-part-1/">Punta Umbria part I</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-08-07&raquo;</span>
+    <a href="/2008/08/07/7-agosto-inicios-con-shoulda/">7 de Agosto inicios con should</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-07-22&raquo;</span>
+    <a href="/2008/07/22/coleccion-senales-luminosas/">Colleción señales luminosas</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-07-15&raquo;</span>
+    <a href="/2008/07/15/noche-monologo-beer-station/">Noche de monólogos en Beer Station</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-07-13&raquo;</span>
+    <a href="/2008/07/13/anadir-fotos-flickr-nuestro-perfil/">Añadir fotos Flick a nuestro perfil</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-07-09&raquo;</span>
+    <a href="/2008/07/09/simplificacion-vistas-rails-2-0/">Simplificacion Vistas Rails 2.0</a>
+  </li>
+  
+  <li class="post">
+    <span class="time">2008-07-08&raquo;</span>
+    <a href="/2008/07/08/un-castillo-y-expo-2008-zaragoza/">Un castillo y Expo 2008 Zaragoza</a>
+  </li>
+  
+</ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/application.js?cb=23dc9061ba93ec68527e675c87e0c367"></script>
+  </body>
+
+</html>
