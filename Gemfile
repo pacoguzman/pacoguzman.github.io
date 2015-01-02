@@ -12,3 +12,6 @@ gem 'sass'
 gem 'uglifier'
 
 gem 'refills'
+
+# To deploy
+gem 'rake'
