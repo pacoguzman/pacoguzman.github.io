@@ -1,0 +1,86 @@
+// ==========================================================================
+// Scaffolding
+// ==========================================================================
+
+// apply a natural box layout model to all elements via http://paulirish.com/2012/box-sizing-border-box-ftw/
+// universal selector doesn't apply to pseudo-elements, so: http://jsfiddle.net/grewis/nHaxL/4/
+// http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+html {
+  box-sizing: border-box;
+  // scss-lint:disable DuplicateProperty
+  background: $blue;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNSIgdmlld0JveD0iMCAwIDE2MCAxNSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pbllNaW4iPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLW9wYWNpdHk9IjAuMyIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMCAwLjVjMjYuNyAwIDUzLjMgMTQgODAgMTQgMjYuNyAwIDUzLjMtMTQgODAtMTRNMC00LjVjMjYuNyAwIDUzLjMgMTQgODAgMTQgMjYuNyAwIDUzLjMtMTQgODAtMTRNMC05LjVjMjYuNyAwIDUzLjMgMTQgODAgMTQgMjYuNyAwIDUzLjMtMTQgODAtMTRNMCA1LjVjMjYuNyAwIDUzLjMgMTQgODAgMTQgMjYuNyAwIDUzLjMtMTQgODAtMTRNMCAxMC41YzI2LjcgMCA1My4zIDE0IDgwIDE0IDI2LjcgMCA1My4zLTE0IDgwLTE0Ii8+PC9zdmc+),
+              linear-gradient(to bottom, $green 0%, $blue 100%) fixed;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.outer-container {
+  max-width: 94%;
+
+  @include breakpoint(extra-large-desktop) {
+    max-width: 1600px;
+  }
+
+  @include breakpoint(extra-extra-large-desktop) {
+    margin: 0 auto;
+  }
+
+  @include breakpoint(all-mobile) {
+    max-width: 100%;
+  }
+}
+
+.inner-container {
+  background-color: $color-inner--container;
+}
+
+// Primary
+// ==========================================================================
+.primary {
+  padding: 6% 4% 12% 6%;
+  width: 70%;
+
+  @include breakpoint(smaller-than-small-desktop) {
+    padding: 6% 6% 12%;
+  }
+}
+
+// Secondary
+// ==========================================================================
+.secondary {
+  padding: 6% 6% 12% 4%;
+  width: 30%;
+
+  @include breakpoint(smaller-than-small-desktop) {
+    padding: 6%;
+  }
+}
+
+.primary,
+.secondary {
+  float: left;
+
+  @include breakpoint(smaller-than-small-desktop) {
+    float: none;
+    width: auto;
+  }
+}
+
+// Footer
+// ==========================================================================
+.site-footer {
+  padding: 6%;
+
+  @include breakpoint(all-mobile) {
+    padding: 9% 6%;
+  }
+
+  @include breakpoint(mobile-portrait-to-mobile-landscape) {
+    padding: 12% 6%;
+  }
+}

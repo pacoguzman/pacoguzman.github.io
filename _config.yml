@@ -1,28 +1,37 @@
-gems: [bourbon, neat]
+# Jekyll configuration
+# Use _config.build.yml to override these settings on `grunt build`.
 
-# Structure configuration
-source: source
-destination: _site
+# Note: Grunt handles some Jekyll configuration. If you set something here and
+# it doesn't work, check if it is set in the Gruntfile.
 
-assets:
-  cachebust: soft
+title: 'Development, sports, and more by @PacoGuzman'
+url: 'http://localhost:3000'
+author: 'Paco Guzmán'
+twitter: 'pacoguzman'
+email: 'pacoguzmanp@gmail.com'
+description: 'Paco Guzmán is a Back End Developer from Madrid, Spain'
 
-# Global settings
-timezone: Madrid
-encoding: utf-8
+environment: development
 
-# Site settings
-title: Riding to NoWhere
-email: pacoguzmanp@gmail.com
-description: "Personal blog about Ruby and Rails development and live experiences"
-baseurl: ""
-url: "https://pacoguzman.github.io"
-twitter_username: pacoguzman
-github_username:  pacoguzman
+exclude: ['css', 'img', 'js', 'fonts', '**.png', '**.jpg', '**.jpeg', '**.gif', '**.svg', '**.ico']
+keep_files: ['perf']
 
-# Build settings
-markdown: kramdown
-permalink: pretty
+# Publish posts with future date.
+# _config.build.yml sets this to false on `grunt build`
+future: true
 
-kramdown:
-  input: GFM
+# Compile posts in the _drafts directory.
+# _config.build.yml sets this to false on `grunt build`
+show_drafts: true
+
+category_title_prefix: ''
+category_dir: /
+
+permalink: /:year/:month/:title/
+paginate: 5
+
+# disable this with ''
+excerpt_separator: ''
+
+# Use Pygments to highlight code blocks
+highlighter: pygments

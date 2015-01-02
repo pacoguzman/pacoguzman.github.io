@@ -1,17 +1,6 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# gem 'github-pages'
-
-gem 'bourbon'
-gem 'coffee-script'
-gem 'jekyll'
-gem 'jekyll-assets'
-gem 'jekyll-haml'
-gem 'neat'
-gem 'sass'
-gem 'uglifier'
-
-gem 'refills'
-
-# To deploy
-gem 'rake'
+gem "jekyll", "~> 2.5.2"
+gem "kramdown"
+gem "sass", "~> 3.4.9"
+gem "scss-lint", "~> 0.31.0"
