@@ -1,0 +1,11 @@
+- url: "/"
+  title: Riding to NoWhere
+
+- url: "/posts"
+  title: Posts
+
+#- url: "/about"
+#  title: About Me
+#
+#- url: "/contact"
+#  title: Contact

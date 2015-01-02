@@ -1,0 +1,42 @@
+@import "vendor/normalize";
+@import "bourbon";
+@import "neat";
+
+@import "base/base";
+@import "global";
+@import "pygments";
+
+@import "refills/_navigation";
+@import "refills/_footer-2";
+
+.page-content {
+  @include outer-container;
+}
+
+.wrap {
+  @include span-columns(8);
+  @include shift(2);
+}
+
+.page-heading {
+
+}
+
+.post-list {
+  .post {
+    .time {
+
+    }
+
+    a {
+
+    }
+  }
+}
+
+.footer-2 {
+  @include row();
+
+  padding: 1.5em;
+  width: 100%;
+}

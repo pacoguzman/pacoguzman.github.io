@@ -1,3 +1,12 @@
+gems: [bourbon, neat]
+
+# Structure configuration
+source: source
+destination: build
+
+assets:
+  cachebust: soft
+
 # Global settings
 timezone: Madrid
 encoding: utf-8
@@ -5,7 +14,7 @@ encoding: utf-8
 # Site settings
 title: Riding to NoWhere
 email: pacoguzmanp@gmail.com
-description: "Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description."
+description: "Personal blog about Ruby and Rails development and live experiences"
 baseurl: ""
 url: "https://pacoguzman.github.io"
 twitter_username: pacoguzman
@@ -17,4 +26,3 @@ permalink: pretty
 
 kramdown:
   input: GFM
-
