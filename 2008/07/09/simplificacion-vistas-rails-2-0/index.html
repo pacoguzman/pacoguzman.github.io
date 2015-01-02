@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width initial-scale=1" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+      <title>Simplificacion Vistas Rails 2.0</title>
+      <meta name="description" content="Personal blog about Ruby and Rails development and live experiences">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="canonical" href="https://pacoguzman.github.io/2008/07/09/simplificacion-vistas-rails-2-0/">
+      <link rel="stylesheet" href="/assets/application.css?cb=38dd5d53ee15645b619f25a3939dc4af">
+
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-58160626-1', 'auto');
+          ga('send', 'pageview');
+
+      </script>
+  </head>
+
+  <body>
+    <header class="navigation">
+  <div class="menu-wrapper">
+    <a href="javascript:void(0)" class="logo">
+      <img src="https://raw.github.com/Magnus-G/Random/master/placeholder_logo_1.png" alt="">
+    </a>
+    <p class="navigation-menu-button" id="js-mobile-menu">MENU</p>
+    <div class="nav">
+      <ul id="navigation-menu">
+        
+          
+            <li class="nav-link"><a href="/">Riding to NoWhere</a></li>
+          
+        
+          
+            <li class="nav-link"><a href="/posts">Posts</a></li>
+          
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  $(function() {
+    var menu = $('#navigation-menu');
+    var menuToggle = $('#js-mobile-menu');
+    var signUp = $('.sign-up');
+
+    $(menuToggle).on('click', function(e) {
+      e.preventDefault();
+      menu.slideToggle(function(){
+        if(menu.is(':hidden')) {
+          menu.removeAttr('style');
+        }
+      });
+    });
+
+    // underline under the active nav item
+    $(".nav .nav-link").click(function() {
+      $(".nav .nav-link").each(function() {
+        $(this).removeClass("active-nav-item");
+      });
+      $(this).addClass("active-nav-item");
+      $(".nav .more").removeClass("active-nav-item");
+    });
+  });
+</script>
+
+    <div class="page-content">
+        <div class="wrap">
+            <div class="post">
+
+  <header class="post-header">
+    <h1>Simplificacion Vistas Rails 2.0</h1>
+    <p class="meta">Jul 9, 2008</p>
+  </header>
+
+  <article class="post-content">
+  <p>Hoy me voy a dedicar a simplificar un poco mi aplicación Rails que estoy desarrollando para mi proyecto fin de carrera en la <a href="http://www.uc3m.es" title="http://www.uc3m.es" id="link_0">Universidad Carlos III de Madrid</a>.</p>
+
+<p>De momento esta en fase pre-alfa se podría decir, pero pronto estará accesible a todos para que al menos la podáis echar un vistazo.</p>
+
+<p>Para la simplificación de vistas me he basado en un capítulo de la web railscasts el episodio denominado <a href="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" title="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" id="link_1">simplify views with rails 2</a>.</p>
+
+<p>Partiendo de catalogs/show.html.erb</p>
+
+<pre><code class="language-html">&lt;h1&gt;Catalog &lt;%=h @catalog.id %&gt;&lt;/h1&gt;
+&lt;div class="details"&gt;
+  &lt;p&gt;
+    &lt;b&gt;Type &lt;/b&gt;
+    &lt;%=h @catalog.type_catalog %&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;b&gt;User:&lt;/b&gt;
+    &lt;%=h @catalog.user.login %&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;b&gt;Created at:&lt;/b&gt;
+    &lt;%=h @catalog.created_at %&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;b&gt;Updated at:&lt;/b&gt;
+    &lt;%=h @catalog.updated_at %&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>Podemos sustituirlo por el código del partial catalogs/_catalog.html.erb&lt;</p>
+
+<pre><code class="language-html">&lt;%= render :partial =&gt; 'catalog', :object =&gt; @catalog %&gt;
+</code></pre>
+
+<p>Pero lo que podemos hacer para reducir aún más el código es pasar directamente el objeto al partial, rails se encarga de ver que clase de objeto y buscar el partial asociado.</p>
+
+<pre><code class="language-html">&lt;%= render :partial =&gt;&lt;del&gt; &lt;/del&gt;@catalog %&gt;
+</code></pre>
+
+<p>Finalmente modificamos el partial ligeramente:</p>
+
+<p>```html<br />
+&lt;% div_for catalog do %&gt;</p>
+<h1>Catalog &lt;%=h catalog.id %&gt;</h1>
+<div class="details">
+  <p>
+    <b>Type </b>
+    &lt;%=h catalog.type_catalog %&gt;
+  </p>
+  <p>
+    <b>User:</b>
+    &lt;%=h catalog.user.login %&gt;
+  </p>
+  <p>
+    <b>Created at:</b>
+    &lt;%=h catalog.created_at %&gt;
+  </p>
+  <p>
+    <b>Updated at:</b>
+    &lt;%=h catalog.updated_at %&gt;
+  </p>
+</div>
+<p>&lt;% end %&gt;<br />
+``</p>
+
+<p>La etiqueta div_for incluye una etiqueta div con class=”catalog” e id=”catalog_#{catalog.id}”</p>
+
+<p>Un saludo</p>
+
+  </article>
+
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/application.js?cb=23dc9061ba93ec68527e675c87e0c367"></script>
+  </body>
+
+</html>

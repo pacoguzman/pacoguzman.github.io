@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width initial-scale=1" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+      <title>Sencillo renderer de CSV en Rails 3</title>
+      <meta name="description" content="Personal blog about Ruby and Rails development and live experiences">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="canonical" href="https://pacoguzman.github.io/2010/12/08/sencillo-renderer-de-csv-en-rails-3/">
+      <link rel="stylesheet" href="/assets/application.css?cb=38dd5d53ee15645b619f25a3939dc4af">
+
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-58160626-1', 'auto');
+          ga('send', 'pageview');
+
+      </script>
+  </head>
+
+  <body>
+    <header class="navigation">
+  <div class="menu-wrapper">
+    <a href="javascript:void(0)" class="logo">
+      <img src="https://raw.github.com/Magnus-G/Random/master/placeholder_logo_1.png" alt="">
+    </a>
+    <p class="navigation-menu-button" id="js-mobile-menu">MENU</p>
+    <div class="nav">
+      <ul id="navigation-menu">
+        
+          
+            <li class="nav-link"><a href="/">Riding to NoWhere</a></li>
+          
+        
+          
+            <li class="nav-link"><a href="/posts">Posts</a></li>
+          
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  $(function() {
+    var menu = $('#navigation-menu');
+    var menuToggle = $('#js-mobile-menu');
+    var signUp = $('.sign-up');
+
+    $(menuToggle).on('click', function(e) {
+      e.preventDefault();
+      menu.slideToggle(function(){
+        if(menu.is(':hidden')) {
+          menu.removeAttr('style');
+        }
+      });
+    });
+
+    // underline under the active nav item
+    $(".nav .nav-link").click(function() {
+      $(".nav .nav-link").each(function() {
+        $(this).removeClass("active-nav-item");
+      });
+      $(this).addClass("active-nav-item");
+      $(".nav .more").removeClass("active-nav-item");
+    });
+  });
+</script>
+
+    <div class="page-content">
+        <div class="wrap">
+            <div class="post">
+
+  <header class="post-header">
+    <h1>Sencillo renderer de CSV en Rails 3</h1>
+    <p class="meta">Dec 8, 2010</p>
+  </header>
+
+  <article class="post-content">
+  <p>En el artículo <a href="http://pacoguzman.lacoctelera.net/post/2010/12/04/csv-y-ruby-1-9-y-encoding-yo-escribo-enconding">anterior</a> vimos como generar texto en formato CSV en ruby 1.9.2 y como utilizar una sencilla clase dentro de una aplicación rails 3 que generaba texto en dicho formato. En este artículo vamos a ver como incorporar lo aprendido para que nuestra aplicación responda a peticiones de formato CSV de una manera muy sencilla.</p>
+
+<p>Partimos del siguiente controlador que simplemente crea un objecto ActiveRecord::Relation (nuestra aplicación no tiene muchos usuarios no nos preocupamos por recuperar todos los registros)</p>
+
+<pre><code class="language-ruby"> class Admin::UsersController &lt; Admin::AdminController
+
+   def index
+     @users = User.scoped
+   end
+ end
+</code></pre>
+
+<p>Ahora simplemente debemos declarar que nuestro controlador y/o acción responde a peticiones csv</p>
+
+<pre><code class="language-ruby"> class Admin::UsersController &lt; Admin:AdminController
+   respond_to :html, :csv
+
+   def index
+     @users = User.scoped
+     respond_with(@users)
+   end
+ end
+</code></pre>
+
+<p>Sin embago si abrimos nuestro navegador y vamos a “/admin/users.csv” nos encontramos con:</p>
+
+<blockquote>
+  <p>Template is missing<br />
+Missing template admin/users/index with {:handlers=&gt;[:erb, :rjs, :builder, :rhtml, :rxml], :formats=&gt;[:csv], :locale=&gt;[:es, :es]}</p>
+</blockquote>
+
+<p>Al utilizar el respond_with y gracias al respond_to :csv hemos indicado a la aplicación que responde a peticiones de formato :csv, pero rails primero comprobará si hemos añadido un bloque para dicho formato o si tenemos una plantilla para hacer el render (index.csv.erb), sino ejecutará un <a href="https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/metal/responder.rb">responder por defecto</a>. Y este responder por defecto producirá el error mostrado anteriormente ya que intenta ejecutar igualmente render(:csv =&gt; @users) pero no tenemos ninguna plantilla definida.</p>
+
+<p>Pero en rails 3 podemos definir que nuestra aplicación responda a xml y json y funcionariá sin definir ninguna plantilla. Y esto es porque rails 3 define “renderers” tanto para xml y json</p>
+
+<pre><code class="language-ruby"> class Admin::UsersController &lt; Admin:AdminController
+   respond_to :html, :csv, :json, :xml
+
+   def index
+     @users = User.scoped
+     respond_with(@users)
+   end
+ end
+
+ module ActionController
+   module Renderers
+     ...
+
+     add :json do |json, options|
+       json = json.to_json(options) unless json.respond_to?(:to_str)
+       json = "#{options[:callback]}(#{json})" unless options[:callback].blank?
+       self.content_type ||= Mime::JSON
+       self.response_body  = json
+     end
+
+     add :xml do |xml, options|
+       self.content_type ||= Mime::XML
+       self.response_body  = xml.respond_to?(:to_xml) ? xml.to_xml(options) : xml
+     end
+
+     ...
+   end
+ end
+</code></pre>
+
+<p>Entonces simplemente lo que necesitamos es añadir un nuevo “renderer” para el formato csv. Nos creamos el initializer csv_renderer.rb</p>
+
+<pre><code class="language-ruby"> ActiveSupport.on_load :action_controller do
+   ActionController.add_renderer :csv do |relation, options|
+     csv_instance = CsvDelegator.new(relation)
+
+     options = {:type =&gt; "text/csv; charset=utf8", :filename =&gt; csv_instance.filename}.merge(options)
+     send_data csv_instance.to_csv, options.slice(:type, :filename)
+   end
+ end
+</code></pre>
+
+<p>Y no necesitamos añadir nada más, bueno si definir nuestra clase CsvDelegator, pero eso no tiene mucha historia y os lo dejo a vosotros</p>
+
+<p>Y bueno unos links que pueden resultar de interes:<br />
+  - <a href="http://bigbangtechnology.com/post/rails3_upgrade">Rails 3 upgrade</a><br />
+  - <a href="http://www.engineyard.com/blog/2010/render-options-in-rails-3/">Render Options in Rails 3</a><br />
+  - <a href="http://media.pragprog.com/titles/jvrails/create.pdf">Creating your own renderer</a><br />
+  - <a href="http://weblog.rubyonrails.org/2009/8/31/three-reasons-love-responder">Three reasons love responder</a></p>
+
+<p>NOTA: ¿Por qué en los diferentes ejemplos utilizan ActionController::Renderers.add en lugar de ActionController.add_renderer? ¡Qué alguien me cuente!</p>
+
+  </article>
+
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/application.js?cb=23dc9061ba93ec68527e675c87e0c367"></script>
+  </body>
+
+</html>
