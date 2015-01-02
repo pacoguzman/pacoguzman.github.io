@@ -1,1 +1,39 @@
-<p>Hoy me voy a dedicar a simplificar un poco mi aplicación Rails que estoy desarrollando para mi proyecto fin de carrera en la <a href="http://www.uc3m.es" title="http://www.uc3m.es" id="link_0">Universidad Carlos III de Madrid</a>.</p><p>De momento esta en fase pre-alfa se podría decir, pero pronto estará accesible a todos para que al menos la podáis echar un vistazo.</p><p>Para la simplificación de vistas me he basado en un capítulo de la web railscasts el episodio denominado <a href="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" title="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" id="link_1">simplify views with rails 2</a>.</p><p>Partiendo de catalogs/show.html.erb</p><p>```html</p><h1>Catalog &lt;%=h @catalog.id %&gt;</h1><div class="details"><p><b>Type</b> &lt;%=h @catalog.type_catalog %&gt;</p><p><b>User:</b> &lt;%=h @catalog.user.login %&gt;</p><p><b>Created at:</b> &lt;%=h @catalog.created_at %&gt;</p><p><b>Updated at:</b> &lt;%=h @catalog.updated_at %&gt;</p></div><p>```</p><p>Podemos sustituirlo por el código del partial catalogs/_catalog.html.erb&lt;</p><p><code>html &lt;%= render :partial =&gt; 'catalog', :object =&gt; @catalog %&gt;</code></p><p>Pero lo que podemos hacer para reducir aún más el código es pasar directamente el objeto al partial, rails se encarga de ver que clase de objeto y buscar el partial asociado.</p><p><code>html &lt;%= render :partial =&gt;&lt;del&gt; &lt;/del&gt;@catalog %&gt;</code></p><p>Finalmente modificamos el partial ligeramente:</p><p>```html &lt;% div_for catalog do %&gt;</p><h1>Catalog &lt;%=h catalog.id %&gt;</h1><div class="details"><p><b>Type</b> &lt;%=h catalog.type_catalog %&gt;</p><p><b>User:</b> &lt;%=h catalog.user.login %&gt;</p><p><b>Created at:</b> &lt;%=h catalog.created_at %&gt;</p><p><b>Updated at:</b> &lt;%=h catalog.updated_at %&gt;</p></div><p>&lt;% end %&gt; ``</p><p>La etiqueta div_for incluye una etiqueta div con class=”catalog” e id=”catalog_#{catalog.id}”</p><p>Un saludo</p>
+<p>Hoy me voy a dedicar a simplificar un poco mi aplicación Rails que estoy desarrollando para mi proyecto fin de carrera en la <a href="http://www.uc3m.es" title="http://www.uc3m.es" id="link_0">Universidad Carlos III de Madrid</a>.</p><p>De momento esta en fase pre-alfa se podría decir, pero pronto estará accesible a todos para que al menos la podáis echar un vistazo.</p><p>Para la simplificación de vistas me he basado en un capítulo de la web railscasts el episodio denominado <a href="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" title="http://media.railscasts.com/videos/080_simplify_views_with_rails_2.mov" id="link_1">simplify views with rails 2</a>.</p><p>Partiendo de catalogs/show.html.erb</p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>Catalog <span class="err">&lt;</span>%=h @catalog.id %&gt;<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;details&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Type <span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h @catalog.type_catalog %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>User:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h @catalog.user.login %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Created at:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h @catalog.created_at %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Updated at:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h @catalog.updated_at %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div><p>Podemos sustituirlo por el código del partial catalogs/_catalog.html.erb&lt;</p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="err">&lt;</span>%= render :partial =&gt; &#39;catalog&#39;, :object =&gt; @catalog %&gt;</code></pre></div><p>Pero lo que podemos hacer para reducir aún más el código es pasar directamente el objeto al partial, rails se encarga de ver que clase de objeto y buscar el partial asociado.</p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="err">&lt;</span>%= render :partial =&gt;<span class="nt">&lt;del&gt;</span> <span class="nt">&lt;/del&gt;</span>@catalog %&gt;</code></pre></div><p>Finalmente modificamos el partial ligeramente:</p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="err">&lt;</span>% div_for catalog do %&gt;
+<span class="nt">&lt;h1&gt;</span>Catalog <span class="err">&lt;</span>%=h catalog.id %&gt;<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;details&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Type <span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h catalog.type_catalog %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>User:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h catalog.user.login %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Created at:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h catalog.created_at %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;b&gt;</span>Updated at:<span class="nt">&lt;/b&gt;</span>
+    <span class="err">&lt;</span>%=h catalog.updated_at %&gt;
+  <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="err">&lt;</span>% end %&gt;</code></pre></div><p>La etiqueta div_for incluye una etiqueta div con class=”catalog” e id=”catalog_#{catalog.id}”</p><p>Un saludo</p>
